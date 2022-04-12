@@ -100,6 +100,7 @@ public class Numbrix {
         }
     }
 
+
     /**
      * Returns a String which represents the puzzle.
      *
