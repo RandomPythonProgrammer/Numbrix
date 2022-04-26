@@ -6,14 +6,9 @@
  * http://www.parade.com/numbrix
  */
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.stream.Stream;
+import java.util.Scanner;
 
 /**
  * Represents a Numbrix puzzle.
@@ -41,7 +36,7 @@ public class Numbrix {
         int rows = scanner.nextInt();
         int cols = scanner.nextInt();
         grid = new int[rows][cols];
-        used = new boolean[100];
+        used = new boolean[rows * cols + 1];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -58,7 +53,7 @@ public class Numbrix {
      * attempt to solve the puzzle beginning with the number 1.
      */
     public void solve() {
-        for (int i = 0; i < grid.length; i++){
+        for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] == 0 || grid[i][j] == 1) {
                     recursiveSolve(i, j, 1);
@@ -82,20 +77,21 @@ public class Numbrix {
             if ((number == 0 && !used[n]) || number == n) {
                 grid[r][c] = n;
 
-                if (n != (grid.length * grid[0].length)) {
+                if (n == (grid.length * grid[0].length)) {
+                    System.out.println(this);
+                } else {
+
                     recursiveSolve(r, c + 1, n + 1);
                     recursiveSolve(r, c - 1, n + 1);
                     recursiveSolve(r + 1, c, n + 1);
                     recursiveSolve(r - 1, c, n + 1);
+                }
 
-                    if (number == 0) {
-                        grid[r][c] = 0;
-                    }
-                } else {
-                    System.out.println(this);
+                if (number == 0) {
+                    grid[r][c] = 0;
                 }
             }
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
 
         }
     }
@@ -110,12 +106,12 @@ public class Numbrix {
      */
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (int[] array: grid){
-            for (int number: array) {
+        for (int[] array : grid) {
+            for (int number : array) {
                 builder.append(number == 0 ? "-" : number);
                 builder.append("\t");
             }
-            builder.replace(builder.length()-1, builder.length(), "\n");
+            builder.replace(builder.length() - 1, builder.length(), "\n");
         }
         return builder.toString();
     }
