@@ -91,7 +91,7 @@ public class Numbrix {
                     grid[r][c] = 0;
                 }
             }
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException ignored) {
 
         }
     }
